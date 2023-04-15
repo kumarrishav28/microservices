@@ -43,7 +43,7 @@ public class OrderService {
         List<String> skuCodes = order.getOrderLineItems().stream().map(OrderLineItems::getSkuCode).toList();
 
         InventoryResponse [] inventoryResponses = webClientBuilder.build().get()
-                .uri("http://localhost:8082/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
+                .uri("http://inventory-service/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve().bodyToMono(InventoryResponse[].class).block();
 
         boolean allProductIsInStock= Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
